@@ -47,11 +47,15 @@ public class SupervisorActor extends UntypedAbstractActor {
     public void preStart() throws Exception {
         //创建子级Actor
         ActorRef workerActor = getContext().actorOf(Props.create(WorkerActor.class),"workerActor");
+
+        //查找Actor
         //ActorSelection w = getContext().actorSelection("workerActor");
         //System.out.println(w.anchorPath());
         // System.out.println("2==>"+workerActor.path());
         //ActorSelection w = getContext().actorSelection("workerActor");
         //w.tell("getValue",getSelf());
+
+
         //监控child
         getContext().watch(workerActor);
         System.out.println("已经成功监控");
