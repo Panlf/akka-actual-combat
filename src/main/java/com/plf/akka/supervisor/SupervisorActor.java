@@ -14,26 +14,23 @@ import java.sql.SQLException;
 public class SupervisorActor extends UntypedAbstractActor {
 
     //定义监督策略 在1分钟内重启超过3次则停止该Actor
-    private final SupervisorStrategy supervisorStrategy = new OneForOneStrategy(3, Duration.create(1, "minute"), new Function<Throwable, SupervisorStrategy.Directive>() {
-        @Override
-        public SupervisorStrategy.Directive apply(Throwable param) throws Exception {
-            if(param instanceof IOException){
-                System.out.println("===== IOException =====");
-                // 恢复运行
-                return SupervisorStrategy.resume();
-            }else if(param instanceof IndexOutOfBoundsException){
-                System.out.println("===== IndexOutOfBoundsException =====");
-                // 重启
-                return SupervisorStrategy.restart();
-            }else if(param instanceof SQLException){
-                System.out.println("===== SQLException =====");
-                // 停止
-                return SupervisorStrategy.stop();
-            } else {
-                System.out.println("===== escalate =====");
-                // 升级失败
-                return SupervisorStrategy.escalate();
-            }
+    private final SupervisorStrategy supervisorStrategy = new OneForOneStrategy(3, Duration.create(1, "minute"), param -> {
+        if(param instanceof IOException){
+            System.out.println("===== IOException =====");
+            // 恢复运行
+            return SupervisorStrategy.resume();
+        }else if(param instanceof IndexOutOfBoundsException){
+            System.out.println("===== IndexOutOfBoundsException =====");
+            // 重启
+            return SupervisorStrategy.restart();
+        }else if(param instanceof SQLException){
+            System.out.println("===== SQLException =====");
+            // 停止
+            return SupervisorStrategy.stop();
+        } else {
+            System.out.println("===== escalate =====");
+            // 升级失败
+            return SupervisorStrategy.escalate();
         }
     });
 
