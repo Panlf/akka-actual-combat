@@ -15,7 +15,8 @@ public class PinnedSystemActor {
         ActorSystem actorSystem = ActorSystem.create("actor-pinned-sys");
 
         for(int i=0;i<20;i++){
-            ActorRef actorRef =actorSystem.actorOf(Props.create(PinnedActor.class).withDispatcher("my-pinned-dispatcher"),"pinned-"+i);
+            ActorRef actorRef =actorSystem.actorOf(Props.create(PinnedActor.class)
+                    .withDispatcher("my-pinned-dispatcher"),"pinned-"+i);
             actorRef.tell("Hello Pinned",ActorRef.noSender());
         }
 
