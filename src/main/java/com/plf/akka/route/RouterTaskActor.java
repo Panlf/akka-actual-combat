@@ -27,6 +27,7 @@ public class RouterTaskActor extends UntypedAbstractActor {
                     ,"routeeActor"+i);
             listRoutee.add(new ActorRefRoutee(actorRef));
         }
+        //轮询
         router = new Router(new RoundRobinRoutingLogic(),listRoutee);
     }
 
